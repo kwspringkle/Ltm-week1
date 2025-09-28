@@ -208,7 +208,8 @@ Account* signIn(Account* head, const char* filename) {
                 password[strcspn(password, "\n")] = '\0';
 
                 if (strcmp(user->password, password) == 0) {
-                    printf("Welcome %s!\n", user->username);
+                    printf("Welcome!\n");
+                    printf("You are logged in as %s, role %s.\n", user->username,(user->role == 1) ? "Admin" : "User");
                     loggedInUser = user;
                     
                     // Lưu lịch sử đăng nhập
@@ -502,7 +503,6 @@ bool checkAndUnblockAccount(Account* account, const char* filename, Account* hea
     
     time_t currentTime;
     time(&currentTime);
-    
     // Kiểm tra nếu đã qua thời gian khóa
     double timeDiff = difftime(currentTime, account->blockedTime);
     if (timeDiff >= (BLOCK_DURATION_MINUTES * 60)) {
@@ -518,7 +518,8 @@ bool checkAndUnblockAccount(Account* account, const char* filename, Account* hea
     } else {
         // Tính thời gian còn lại
         int remainingMinutes = (int)((BLOCK_DURATION_MINUTES * 60 - timeDiff) / 60) + 1;
-        printf("Your account is still blocked. Please try again in %d minute(s).\n", remainingMinutes);
+        printf("Your account is blocked.\n");
+        printf("Please try again in %d minute(s).\n", remainingMinutes);
         return false;
     }
 }
